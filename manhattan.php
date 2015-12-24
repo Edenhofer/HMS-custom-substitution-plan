@@ -21,8 +21,9 @@ if (strpos($_SERVER["QUERY_STRING"], "iframe") === false) {
 	session_start();
 
 	// determining the origin of query: e.g. Android, Windows, Linux, OS X
-	if (isset($_SESSION['uinfo']) === false) {
-		if (strpos($_SERVER['HTTP_USER_AGENT'], "Windows") !== False) $_SESSION['uinfo'] = '?desktop';
+	if (isset($_SESSION['uinfo']) === False) {
+		if (isset($_SERVER['HTTP_USER_AGENT']) === False) $_SESSION['uinfo'] = '?desktop';
+		else if (strpos($_SERVER['HTTP_USER_AGENT'], "Windows") !== False) $_SESSION['uinfo'] = '?desktop';
 		else if (strpos($_SERVER['HTTP_USER_AGENT'], "OS X") !== False && preg_match("/OS \d/", $_SERVER['HTTP_USER_AGENT']) != 1) $_SESSION['uinfo'] = '?desktop';
 		else if (strpos($_SERVER['HTTP_USER_AGENT'], "Linux") !== False && strpos($_SERVER['HTTP_USER_AGENT'], "Android") === False) $_SESSION['uinfo'] = '?Linux';
 		else $_SESSION['uinfo'] = '?m';
@@ -371,7 +372,9 @@ if ($debug) {
 	if (strpos($_SERVER["QUERY_STRING"], "iframe") === false) {
 		echo "|<br>\$_SESSION['uinfo']=|" . $_SESSION['uinfo'] . "";
 	}
-	echo "|<br>\$_SERVER['HTTP_USER_AGENT']=|" . $_SERVER['HTTP_USER_AGENT'] . "|<br>";
+	if (isset($_SERVER['HTTP_USER_AGENT']) !== False) {
+		echo "|<br>\$_SERVER['HTTP_USER_AGENT']=|" . $_SERVER['HTTP_USER_AGENT'] . "|<br>";
+	}
 }
 
 if (isset($_COOKIE['k']) && isset($_POST['submit']) && strcmp($_POST['submit'], $dc) == 0) {
